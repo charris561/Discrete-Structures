@@ -1,0 +1,14 @@
+
+#This code is supposed to take a single character and a base string (as in Project 3) 
+# and return the value of the digit represented by that character. For example, 
+# getCharValue('2','0123') should return the integer value 2.
+
+#However, the code is broken!
+def getCharValue(character,base) :
+
+    for i in range(len(base)) :
+        if character == base[i] :
+            return i
+
+print(getCharValue('2', '0123'))
+print(getCharValue('d','abcd'))
