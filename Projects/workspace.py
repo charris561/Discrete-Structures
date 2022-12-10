@@ -28,10 +28,13 @@ def list_to_dict(input_list) :
     return_dict = {}
     
     for pair in input_list:
-        if return_dict.get(pair[0]) == None:
-            return_dict[pair[0]]=pair[1]
+        key = pair[0]
+        value = pair[1]
+
+        if (return_dict.get(key) != None):
+            return_dict[key].add(value)
         else:
-            return_dict[pair[0]].add(pair[1])
+            return_dict[key]={value}
 
     return return_dict
 
