@@ -19,26 +19,32 @@ def checkSelfLoops(adjList) :
             print('FAIL: graph has a self-loop: '+str(adjList))
             return 
 
-def list_to_dict(input_list) :
-    '''
-    Input:  list of 0 or more pairs [(a_1,b_1),...,(a_n,b_n)]; each a_i, b_i can be an integer or a string
-    Output: dict with keys a_1,a_2,...,a_n.
-            The value associated with key a_i is the set {b_k such that a_k=a_i}
-    '''
-    return_dict = {}
+def edgeList_to_adjList(edgeList) :
+    adjList = {}
     
-    for pair in input_list:
-        key = pair[0]
-        value = pair[1]
+    for edge in edgeList:
+      
+      #goal, assign each edge a node to mark it's adjaceny to that node
+      key = edge[0]
+      value = edge[1]
+      if (adjList.get(key) != None):
+        adjList[key].add(value)
+      else:
+        adjList[key]={value}
 
-        if (return_dict.get(key) != None):
-            return_dict[key].add(value)
-        else:
-            return_dict[key]={value}
+      #invert key and value to represent edge correctly
+      key = edge[1]
+      value = edge[0]
+      if (adjList.get(key) != None):
+        adjList[key].add(value)
+      else:
+        adjList[key]={value}
 
-    return return_dict
+    return adjList
 
-expectEqual(list_to_dict([]),{})
-expectEqual(list_to_dict([(1,2),(3,4)]),{1:{2},3:{4}})
-expectEqual(list_to_dict([(1,2),(1,3)]),{1: {2, 3}})
-expectEqual(list_to_dict([('a',7),(10,'b'),('strings can be keys too','they sure can')]),{'a': {7}, 10: {'b'}, 'strings can be keys too': {'they sure can'}})
+
+expectEqual(edgeList_to_adjList([]),{})
+expectEqual(edgeList_to_adjList([('A','B')]),{'A': {'B'}, 'B': {'A'}})
+expectEqual(edgeList_to_adjList([('A','B'),('C','D')]),{'A': {'B'}, 'B': {'A'}, 'C': {'D'}, 'D': {'C'}})
+expectEqual(edgeList_to_adjList([('A','B'),('C','D'),('B','D')]),{'A': {'B'}, 'B': {'D', 'A'}, 'C': {'D'}, 'D': {'C', 'B'}})
+expectEqual(edgeList_to_adjList([('A','B'),('A','C'),('A','D'),('C','D'),('B','C'),('B','D')]),{'A': {'D', 'C', 'B'}, 'B': {'D', 'A', 'C'}, 'C': {'D', 'A', 'B'}, 'D': {'A', 'C', 'B'}})
